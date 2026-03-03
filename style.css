@@ -1744,3 +1744,399 @@ body::after {
     max-width: 100%;
   }
 }
+
+
+/* =============================================
+   UNIQUE EFFECTS — EXTENDED STYLES
+   ============================================= */
+
+/* ── CRT SCANLINE OVERLAY ─────────────────── */
+.scanline-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.04) 2px,
+    rgba(0,0,0,0.04) 4px
+  );
+  animation: scanMove 8s linear infinite;
+}
+@keyframes scanMove {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 400px; }
+}
+
+/* ── MATRIX RAIN CANVAS ───────────────────── */
+#matrix-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+#matrix-canvas.active { opacity: 0.045; }
+
+/* ── MORPHING BLOBS ───────────────────────── */
+.blob-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.07;
+  animation: blobMorph 18s ease-in-out infinite alternate;
+}
+.blob-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, var(--cyan), transparent 70%);
+  top: -10%; left: -10%;
+  animation-delay: 0s;
+  animation-duration: 22s;
+}
+.blob-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, var(--purple), transparent 70%);
+  bottom: 10%; right: -5%;
+  animation-delay: -7s;
+  animation-duration: 18s;
+}
+.blob-3 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--pink), transparent 70%);
+  top: 50%; left: 40%;
+  animation-delay: -13s;
+  animation-duration: 25s;
+}
+@keyframes blobMorph {
+  0%   { transform: translate(0,0)   scale(1)    rotate(0deg); }
+  25%  { transform: translate(60px,-40px) scale(1.1) rotate(45deg); }
+  50%  { transform: translate(-40px, 60px) scale(0.9) rotate(90deg); }
+  75%  { transform: translate(80px,  30px) scale(1.15) rotate(135deg); }
+  100% { transform: translate(-30px,-70px) scale(1)   rotate(180deg); }
+}
+
+/* ── STATUS TERMINAL WIDGET ───────────────── */
+#status-terminal {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 8000;
+  width: 280px;
+  background: rgba(2, 8, 24, 0.88);
+  border: 1px solid rgba(0,245,255,0.2);
+  border-radius: 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  box-shadow: 0 0 20px rgba(0,245,255,0.08), inset 0 0 20px rgba(0,0,0,0.3);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+}
+#status-terminal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.st-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(0,245,255,0.1);
+}
+.st-dot { width: 9px; height: 9px; border-radius: 50%; }
+.st-title {
+  color: rgba(0,245,255,0.4);
+  margin-left: 6px;
+  letter-spacing: 0.1em;
+}
+.st-body {
+  height: 90px;
+  overflow: hidden;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+}
+.st-line {
+  color: rgba(0,245,255,0.55);
+  line-height: 1.4;
+  animation: fadeInLine 0.3s ease;
+}
+.st-line .st-time { color: rgba(0,245,255,0.3); margin-right: 6px; }
+.st-line .st-ok   { color: var(--green); }
+.st-line .st-warn { color: var(--pink); }
+@keyframes fadeInLine {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── CLICK NEON RIPPLE ────────────────────── */
+#click-ripples {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  overflow: hidden;
+}
+.click-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid var(--cyan);
+  width: 0; height: 0;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 12px var(--cyan), inset 0 0 12px rgba(0,245,255,0.1);
+  animation: ringExpand 0.7s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+  pointer-events: none;
+}
+.click-ring:nth-child(2) {
+  border-color: var(--purple);
+  box-shadow: 0 0 12px var(--purple);
+  animation-delay: 0.08s;
+  animation-duration: 0.8s;
+}
+.click-ring:nth-child(3) {
+  border-color: var(--pink);
+  box-shadow: 0 0 12px var(--pink);
+  animation-delay: 0.16s;
+  animation-duration: 0.9s;
+}
+@keyframes ringExpand {
+  0%   { width: 0px;   height: 0px;  opacity: 1; }
+  100% { width: 200px; height: 200px; opacity: 0; }
+}
+
+/* ── AUDIO VISUALIZER ─────────────────────── */
+.audio-viz {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.65;
+}
+.av-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 60px;
+}
+.av-bar {
+  width: 5px;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(to top, var(--cyan), var(--purple));
+  box-shadow: 0 0 6px var(--cyan);
+  animation: avDance var(--dur, 0.8s) ease-in-out infinite alternate;
+  height: 8px;
+}
+@keyframes avDance {
+  0%   { height: var(--min-h, 8px);  opacity: 0.5; }
+  100% { height: var(--max-h, 40px); opacity: 1;   }
+}
+
+/* ── HOLOGRAPHIC SHIMMER ON PROJECT CARDS ─── */
+.holo-card {
+  position: relative;
+  overflow: hidden;
+}
+.holo-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255,255,255,0.04) 30%,
+    rgba(0,245,255,0.08) 40%,
+    rgba(191,0,255,0.06) 50%,
+    rgba(255,0,110,0.06) 60%,
+    rgba(0,255,136,0.04) 70%,
+    transparent 80%
+  );
+  background-size: 200% 200%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 2;
+  border-radius: inherit;
+}
+.holo-card:hover::before {
+  opacity: 1;
+}
+.holo-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg,
+    var(--cyan) 0%,
+    var(--purple) 25%,
+    var(--pink) 50%,
+    var(--green) 75%,
+    var(--cyan) 100%
+  );
+  background-size: 300% 300%;
+  opacity: 0;
+  z-index: -1;
+  border-radius: inherit;
+  filter: blur(8px);
+  transition: opacity 0.4s ease;
+  animation: holoRotate 4s linear infinite;
+}
+.holo-card:hover::after {
+  opacity: 0.4;
+}
+@keyframes holoRotate {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 300% 300%; }
+}
+
+/* ── LIQUID SKILL BARS ────────────────────── */
+.skill-bar-wrap {
+  margin: 8px 0 20px;
+}
+.skill-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(0,245,255,0.7);
+  margin-bottom: 6px;
+  letter-spacing: 0.08em;
+}
+.skill-bar-track {
+  height: 10px;
+  background: rgba(0,245,255,0.06);
+  border: 1px solid rgba(0,245,255,0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+.skill-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: width 1.4s cubic-bezier(0.22,1,0.36,1);
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  box-shadow: 0 0 12px var(--cyan);
+}
+.skill-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60px;
+  width: 40px;
+  height: 200%;
+  background: rgba(255,255,255,0.25);
+  transform: skewX(-20deg);
+  animation: waveSlide 1.8s ease-in-out infinite;
+}
+@keyframes waveSlide {
+  0%   { left: -60px; }
+  100% { left: 110%; }
+}
+
+/* ── TEXT SCRAMBLE ANIMATION ─────────────── */
+.scramble-title {
+  display: inline-block;
+  position: relative;
+}
+.scramble-title.scrambling {
+  color: var(--cyan);
+  text-shadow: 0 0 20px var(--cyan);
+}
+
+/* ── GLITCH SECTION FLASH ─────────────────── */
+.section-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  background: linear-gradient(0deg,
+    transparent 30%,
+    rgba(0,245,255,0.04) 31%,
+    rgba(0,245,255,0.04) 32%,
+    transparent 33%
+  );
+  animation: sectionFlash 0.25s step-end forwards;
+}
+@keyframes sectionFlash {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; transform: skewX(-2deg) scaleY(1.02); filter: hue-rotate(90deg); }
+  30%  { opacity: 0.5; transform: skewX(1deg); }
+  50%  { opacity: 1; transform: skewX(-1deg); filter: hue-rotate(180deg); }
+  70%  { opacity: 0.3; }
+  100% { opacity: 0; }
+}
+
+/* ── MAGNETIC BUTTON EFFECT ───────────────── */
+.mag-btn {
+  transition: transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94) !important;
+  will-change: transform;
+}
+
+/* ── SECTION TITLE GLOW ON SCRAMBLE ─────── */
+.scramble-title.done {
+  text-shadow:
+    0 0 30px rgba(0,245,255,0.4),
+    0 0 60px rgba(0,245,255,0.1);
+  transition: text-shadow 0.8s ease;
+}
+
+
+
+/* ── AURORA BOREALIS CANVAS ───────────────── */
+#aurora-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+/* ── HEX GRID CANVAS ─────────────────────── */
+#hex-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+/* ── SHOOTING STAR KEYFRAME ───────────────── */
+@keyframes shootingStar {
+  0%   { transform: translateX(0) translateY(0) scaleX(1); opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateX(700px) translateY(300px) scaleX(0); opacity: 0; }
+}
+.shooting-star {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 100px;
+  height: 1.5px;
+  background: linear-gradient(90deg, rgba(0,245,255,0), rgba(0,245,255,1), rgba(255,255,255,0.9));
+  box-shadow: 0 0 8px 2px rgba(0,245,255,0.6);
+  animation: shootingStar linear forwards;
+}
+

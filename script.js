@@ -1,3 +1,6 @@
+// ── MOBILE DETECTION (shared flag) ─────────────
+const IS_MOBILE = window.innerWidth <= 768 || "ontouchstart" in window;
+
 // ── THEME TOGGLE ─────────────────────────────
 (function themeToggle() {
   const btn = document.getElementById("theme-toggle");
@@ -117,42 +120,50 @@ let mouseX = 0,
   ringX = 0,
   ringY = 0;
 
-document.addEventListener("mousemove", (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  dot.style.left = mouseX + "px";
-  dot.style.top = mouseY + "px";
-});
-
-function animateRing() {
-  ringX += (mouseX - ringX) * 0.1;
-  ringY += (mouseY - ringY) * 0.1;
-  ring.style.left = ringX + "px";
-  ring.style.top = ringY + "px";
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-
-document
-  .querySelectorAll(
-    "a, button, .skill-tag, .project-card, .achieve-card, .cert-card, .contact-link, .stat-card",
-  )
-  .forEach((el) => {
-    el.addEventListener("mouseenter", () => {
-      dot.style.transform = "translate(-50%, -50%) scale(2)";
-      dot.style.background = "var(--purple)";
-      ring.style.width = "56px";
-      ring.style.height = "56px";
-      ring.style.borderColor = "rgba(191,0,255,0.6)";
-    });
-    el.addEventListener("mouseleave", () => {
-      dot.style.transform = "translate(-50%, -50%) scale(1)";
-      dot.style.background = "var(--cyan)";
-      ring.style.width = "36px";
-      ring.style.height = "36px";
-      ring.style.borderColor = "rgba(0,245,255,0.6)";
-    });
+if (!IS_MOBILE) {
+  document.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.left = mouseX + "px";
+    dot.style.top = mouseY + "px";
   });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.1;
+    ringY += (mouseY - ringY) * 0.1;
+    ring.style.left = ringX + "px";
+    ring.style.top = ringY + "px";
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+} else {
+  // Hide cursor elements on mobile – they are useless on touch
+  if (dot) dot.style.display = "none";
+  if (ring) ring.style.display = "none";
+}
+
+if (!IS_MOBILE) {
+  document
+    .querySelectorAll(
+      "a, button, .skill-tag, .project-card, .achieve-card, .cert-card, .contact-link, .stat-card",
+    )
+    .forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        dot.style.transform = "translate(-50%, -50%) scale(2)";
+        dot.style.background = "var(--purple)";
+        ring.style.width = "56px";
+        ring.style.height = "56px";
+        ring.style.borderColor = "rgba(191,0,255,0.6)";
+      });
+      el.addEventListener("mouseleave", () => {
+        dot.style.transform = "translate(-50%, -50%) scale(1)";
+        dot.style.background = "var(--cyan)";
+        ring.style.width = "36px";
+        ring.style.height = "36px";
+        ring.style.borderColor = "rgba(0,245,255,0.6)";
+      });
+    });
+}
 
 // ── NAV SCROLL ──────────────────────────────
 window.addEventListener("scroll", () => {
@@ -172,7 +183,7 @@ function resize() {
 resize();
 window.addEventListener("resize", resize);
 
-const PARTICLE_COUNT = 90;
+const PARTICLE_COUNT = IS_MOBILE ? 20 : 90;
 const particles = [];
 
 class Particle {
@@ -248,7 +259,7 @@ function connectParticles() {
 
 function animateParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  connectParticles();
+  if (!IS_MOBILE) connectParticles(); // skip O(n²) loop on mobile
   particles.forEach((p) => {
     p.update();
     p.draw();
@@ -497,48 +508,50 @@ backToTop.addEventListener("click", () => {
 });
 
 // ── CURSOR PARTICLE TRAIL ─────────────────────
-const TRAIL_COUNT = 6;
-const trailColors = [
-  "#00f5ff",
-  "#bf00ff",
-  "#ff006e",
-  "#00ff88",
-  "#0066ff",
-  "#00f5ff",
-];
-const trail = [];
+if (!IS_MOBILE) {
+  const TRAIL_COUNT = 6;
+  const trailColors = [
+    "#00f5ff",
+    "#bf00ff",
+    "#ff006e",
+    "#00ff88",
+    "#0066ff",
+    "#00f5ff",
+  ];
+  const trail = [];
 
-for (let i = 0; i < TRAIL_COUNT; i++) {
-  const p = document.createElement("div");
-  p.className = "cursor-particle";
-  const size = 6 - i * 0.7;
-  p.style.cssText = `width:${size}px;height:${size}px;background:${trailColors[i]};opacity:0;`;
-  document.body.appendChild(p);
-  trail.push({ el: p, x: 0, y: 0 });
-}
+  for (let i = 0; i < TRAIL_COUNT; i++) {
+    const p = document.createElement("div");
+    p.className = "cursor-particle";
+    const size = 6 - i * 0.7;
+    p.style.cssText = `width:${size}px;height:${size}px;background:${trailColors[i]};opacity:0;`;
+    document.body.appendChild(p);
+    trail.push({ el: p, x: 0, y: 0 });
+  }
 
-let trailMouseX = 0,
-  trailMouseY = 0;
-document.addEventListener("mousemove", (e) => {
-  trailMouseX = e.clientX;
-  trailMouseY = e.clientY;
-});
-
-function animateTrail() {
-  let x = trailMouseX,
-    y = trailMouseY;
-  trail.forEach((p, i) => {
-    p.el.style.left = p.x + "px";
-    p.el.style.top = p.y + "px";
-    p.el.style.opacity = (0.55 - i * 0.08).toString();
-    const nextX = i === 0 ? x : trail[i - 1].x;
-    const nextY = i === 0 ? y : trail[i - 1].y;
-    p.x += (nextX - p.x) * 0.35;
-    p.y += (nextY - p.y) * 0.35;
+  let trailMouseX = 0,
+    trailMouseY = 0;
+  document.addEventListener("mousemove", (e) => {
+    trailMouseX = e.clientX;
+    trailMouseY = e.clientY;
   });
-  requestAnimationFrame(animateTrail);
+
+  function animateTrail() {
+    let x = trailMouseX,
+      y = trailMouseY;
+    trail.forEach((p, i) => {
+      p.el.style.left = p.x + "px";
+      p.el.style.top = p.y + "px";
+      p.el.style.opacity = (0.55 - i * 0.08).toString();
+      const nextX = i === 0 ? x : trail[i - 1].x;
+      const nextY = i === 0 ? y : trail[i - 1].y;
+      p.x += (nextX - p.x) * 0.35;
+      p.y += (nextY - p.y) * 0.35;
+    });
+    requestAnimationFrame(animateTrail);
+  }
+  animateTrail();
 }
-animateTrail();
 
 // ═══════════════════════════════════════════════════════════════
 //  UNIQUE EFFECTS EXTENSION
@@ -547,6 +560,9 @@ animateTrail();
 // ── 1. MATRIX DIGITAL RAIN ────────────────────
 (function matrixRain() {
   const mc = document.getElementById("matrix-canvas");
+  if (!mc) return;
+  // On mobile use fewer columns and a slower interval to save CPU
+  const mobileMode = IS_MOBILE;
   const mctx = mc.getContext("2d");
   function resizeMC() {
     mc.width = window.innerWidth;
@@ -557,8 +573,10 @@ animateTrail();
 
   const chars =
     "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ0123456789ABCDEF<>/\\|[]{}";
-  const fontSize = 14;
+  const fontSize = mobileMode ? 18 : 14;
   let cols = Math.floor(mc.width / fontSize);
+  // On mobile only animate every other column to halve the work
+  if (mobileMode) cols = Math.floor(cols / 2);
   let drops = Array(cols).fill(1);
 
   function drawMatrix() {
@@ -569,18 +587,25 @@ animateTrail();
       const char = chars[Math.floor(Math.random() * chars.length)];
       const alpha = Math.random() > 0.9 ? 1 : 0.4;
       mctx.fillStyle = alpha === 1 ? "#00f5ff" : "rgba(0,245,255,0.3)";
-      mctx.fillText(char, i * fontSize, drops[i] * fontSize);
+      // On mobile, space columns out by 2x to match halved col count
+      mctx.fillText(
+        char,
+        i * fontSize * (mobileMode ? 2 : 1),
+        drops[i] * fontSize,
+      );
       if (drops[i] * fontSize > mc.height && Math.random() > 0.975)
         drops[i] = 0;
       drops[i]++;
     }
     window.addEventListener("resize", () => {
       cols = Math.floor(mc.width / fontSize);
+      if (mobileMode) cols = Math.floor(cols / 2);
       drops = Array(cols).fill(1);
     });
   }
 
-  setInterval(drawMatrix, 50);
+  // 50ms on desktop, 200ms on mobile
+  setInterval(drawMatrix, mobileMode ? 200 : 50);
 
   // Activate after hero is scrolled past
   const heroEl = document.getElementById("hero");
@@ -809,6 +834,7 @@ animateTrail();
 
 // ── 10. PARALLAX FLOATING ORBS ON ABOUT ──────
 (function parallaxAbout() {
+  if (IS_MOBILE) return; // mouse parallax is useless on touch screens
   document.addEventListener("mousemove", (e) => {
     const dx = (e.clientX / window.innerWidth - 0.5) * 25;
     const dy = (e.clientY / window.innerHeight - 0.5) * 25;
@@ -825,6 +851,7 @@ animateTrail();
 
 // ── A. AURORA BOREALIS ────────────────────────
 (function aurora() {
+  if (IS_MOBILE) return; // too heavy for mobile
   const ac = document.getElementById("aurora-canvas");
   const ctx = ac.getContext("2d");
 
@@ -997,6 +1024,7 @@ animateTrail();
 
 // ── C. ANIMATED HEX GRID ─────────────────────
 (function hexGrid() {
+  if (IS_MOBILE) return; // too heavy for mobile
   const hc = document.getElementById("hex-canvas");
   const ctx = hc.getContext("2d");
 

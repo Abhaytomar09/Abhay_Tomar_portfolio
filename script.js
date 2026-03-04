@@ -1,3 +1,63 @@
+// ── THEME TOGGLE ─────────────────────────────
+(function themeToggle() {
+  const btn = document.getElementById("theme-toggle");
+  if (!btn) return;
+  const saved = localStorage.getItem("theme");
+  if (saved === "light") {
+    document.documentElement.setAttribute("data-theme", "light");
+    btn.textContent = "☀️";
+  }
+  btn.addEventListener("click", () => {
+    const isLight =
+      document.documentElement.getAttribute("data-theme") === "light";
+    if (isLight) {
+      document.documentElement.removeAttribute("data-theme");
+      btn.textContent = "🌙";
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+      btn.textContent = "☀️";
+      localStorage.setItem("theme", "light");
+    }
+    // subtle spin on toggle
+    btn.style.transition = "transform 0.4s ease";
+    btn.style.transform = "rotate(360deg)";
+    setTimeout(() => {
+      btn.style.transform = "";
+    }, 420);
+  });
+})();
+
+// ── OPEN TO WORK BANNER CLOSE ────────────────
+(function otwBanner() {
+  const banner = document.getElementById("otw-banner");
+  const closeBtn = document.getElementById("otw-close");
+  if (!banner || !closeBtn) return;
+  // If already dismissed this session, hide immediately
+  if (sessionStorage.getItem("otwClosed")) {
+    banner.style.display = "none";
+    return;
+  }
+  closeBtn.addEventListener("click", () => {
+    banner.classList.add("hidden");
+    setTimeout(() => {
+      banner.style.display = "none";
+    }, 450);
+    sessionStorage.setItem("otwClosed", "1");
+  });
+})();
+
+// ── CANVAS MOBILE THROTTLE ───────────────────
+(function canvasMobileThrottle() {
+  const isMobile = window.innerWidth <= 768;
+  if (!isMobile) return;
+  // Disable aurora and hex-grid on mobile to save CPU
+  ["aurora-canvas", "hex-canvas"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
+})();
+
 // ── SERVICE WORKER REGISTRATION ──────────────
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {

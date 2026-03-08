@@ -1329,6 +1329,11 @@ section {
   background: linear-gradient(to bottom, var(--cyan), var(--purple), transparent);
 }
 
+@media (max-width: 600px) {
+  .timeline { padding-left: 24px; }
+  .timeline::before { left: 0px; }
+}
+
 .timeline-item { position: relative; margin-bottom: 40px; }
 .timeline-item::before {
   content: '';
@@ -1338,6 +1343,14 @@ section {
   border-radius: 50%;
   background: var(--cyan);
   box-shadow: 0 0 12px var(--cyan);
+}
+
+@media (max-width: 600px) {
+  .timeline-item::before {
+    left: -29px;
+    width: 8px;
+    height: 8px;
+  }
 }
 
 .timeline-date {
@@ -2579,18 +2592,21 @@ footer {
   perspective: 1000px;
   height: 480px;
   cursor: pointer;
+  -webkit-transform-style: preserve-3d;
 }
 .card-flip-inner {
   position: relative;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   transition: transform 0.65s cubic-bezier(0.4,0,0.2,1);
 }
 .project-card:hover .card-flip-inner,
 .project-card:active .card-flip-inner,
 .project-card.flipped .card-flip-inner {
   transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 .card-face {
   position: absolute;

@@ -1,17 +1,44 @@
 {
-  "name": "Abhay Tomar | Portfolio",
-  "short_name": "Abhay.Dev",
-  "description": "Full Stack Developer · AI/ML · Cybersecurity · Top 2% TryHackMe",
-  "start_url": "/index.html",
+  "name": "Abhay Tomar — Full Stack Developer & Cybersecurity Engineer",
+  "short_name": "Abhay Tomar",
+  "description": "Portfolio of Abhay Tomar: MERN Stack Developer, Cybersecurity Engineer, Top 2% TryHackMe. Open to dev & security roles from May 2026.",
+  "start_url": "/Abhay_Tomar_portofoio/",
+  "scope": "/Abhay_Tomar_portofoio/",
   "display": "standalone",
   "background_color": "#020818",
-  "theme_color": "#00f5ff",
-  "orientation": "portrait-primary",
+  "theme_color": "#25d1f4",
+  "orientation": "any",
+  "lang": "en-IN",
+  "categories": ["portfolio", "developer", "technology"],
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>",
+      "src": "abhay.jpeg",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "abhay.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "View Projects",
+      "url": "/Abhay_Tomar_portofoio/#projects",
+      "description": "View Abhay Tomar's full stack development projects"
+    },
+    {
+      "name": "Contact Abhay",
+      "url": "/Abhay_Tomar_portofoio/#contact",
+      "description": "Get in touch with Abhay Tomar for hiring"
+    },
+    {
+      "name": "Download CV",
+      "url": "/Abhay_Tomar_portofoio/Abhay_Tomar_CV.pdf",
+      "description": "Download Abhay Tomar's resume"
     }
   ]
 }

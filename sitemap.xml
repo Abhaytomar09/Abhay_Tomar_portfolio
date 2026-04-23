@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://abhaytomar09.github.io/Abhay_Tomar_portofoio/</loc>
+    <priority>1.0</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-23</lastmod>
+    <image:image>
+      <image:loc>https://abhaytomar09.github.io/Abhay_Tomar_portofoio/og-image.png</image:loc>
+      <image:title>Abhay Tomar — Full Stack Developer &amp; Cybersecurity Engineer</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://abhaytomar09.github.io/Abhay_Tomar_portofoio/abhay.jpeg</image:loc>
+      <image:title>Abhay Tomar Profile Photo</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://abhaytomar09.github.io/Abhay_Tomar_portofoio/#projects</loc>
+    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://abhaytomar09.github.io/Abhay_Tomar_portofoio/project-supplysense.png</image:loc>
+      <image:title>SupplySenseAI — AI-Powered Supply Chain Platform by Abhay Tomar</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://abhaytomar09.github.io/Abhay_Tomar_portofoio/project-cyberguard.png</image:loc>
+      <image:title>CyberGuard — Vehicle Theft Complaint System by Abhay Tomar</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://abhaytomar09.github.io/Abhay_Tomar_portofoio/project-campusvote.png</image:loc>
+      <image:title>CampusVote — Online College Voting System by Abhay Tomar</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://abhaytomar09.github.io/Abhay_Tomar_portofoio/#certifications</loc>
+    <priority>0.7</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://abhaytomar09.github.io/Abhay_Tomar_portofoio/#contact</loc>
+    <priority>0.8</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://abhaytomar09.github.io/Abhay_Tomar_portofoio/#faq</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+</urlset>

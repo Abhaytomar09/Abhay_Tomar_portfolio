@@ -1187,3 +1187,99 @@ if (!IS_MOBILE) {
     });
   });
 })();
+
+// ═══════════════════════════════════════════════════════════════
+//  ANIME.JS 3D ANIMATIONS
+// ═══════════════════════════════════════════════════════════════
+
+(function init3DAnimations() {
+  // Only run if anime is loaded
+  if (typeof anime === "undefined") return;
+
+  // 1. Hero Text 3D Entrance
+  // Give the text wrapper a perspective so the 3D rotate looks correct
+  const heroTextCol = document.querySelector(".hero-text-col");
+  if (heroTextCol) {
+    heroTextCol.style.perspective = "1000px";
+
+    anime({
+      targets: [
+        ".hero-badges-row",
+        ".hero-name",
+        ".hero-subtitle",
+        ".typewriter-wrap",
+        ".hero-btns",
+      ],
+      rotateX: [90, 0], // Swing from laying flat back to standing up
+      opacity: [0, 1],
+      translateY: [50, 0],
+      duration: 1200,
+      delay: anime.stagger(150, { start: 300 }), // Start slightly after page load
+      easing: "easeOutElastic(1, .6)",
+    });
+  }
+
+  // 2. Hero Photo 3D Continuous Float
+  // Ensure the parent wrap has perspective
+  const heroPhotoFrame = document.querySelector(".hero-photo-frame");
+  const heroPhotoWrap = document.querySelector(".hero-photo-wrap");
+
+  if (heroPhotoFrame && heroPhotoWrap) {
+    // Add perspective for 3D depth
+    heroPhotoFrame.style.perspective = "800px";
+    // Remove the default css transition so it doesn't fight with anime.js
+    heroPhotoWrap.style.transition = "none";
+
+    anime({
+      targets: heroPhotoWrap,
+      translateY: [-10, 10], // Bob up and down
+      rotateX: [-5, 5], // Tilt up/down
+      rotateY: [-5, 5], // Tilt left/right
+      duration: 4000,
+      loop: true,
+      direction: "alternate",
+      easing: "easeInOutSine",
+    });
+  }
+
+  // 3. Staggered 3D Flip for Skill Tags (Triggered on scroll)
+  const skillsGrid = document.querySelector(".skills-grid");
+  if (skillsGrid) {
+    // Add perspective to parents
+    document
+      .querySelectorAll(".skill-tags")
+      .forEach((el) => (el.style.perspective = "600px"));
+
+    // Set initial state
+    anime.set(".skill-tag", {
+      rotateY: -90,
+      opacity: 0,
+      transformOrigin: "50% 50%",
+    });
+
+    const skillObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Flips the tags in a sequence from left to right
+            anime({
+              targets: entry.target.querySelectorAll(".skill-tag"),
+              rotateY: [-90, 0],
+              opacity: [0, 1],
+              delay: anime.stagger(80),
+              duration: 800,
+              easing: "easeOutBack",
+            });
+            skillObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 },
+    );
+
+    // Observe each category block to trigger animations when the block enters the screen
+    document.querySelectorAll(".skill-cat").forEach((cat) => {
+      skillObserver.observe(cat);
+    });
+  }
+})();

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://abhaytomar09.github.io/Abhay_Tomar_portfolio/sitemap.xml
